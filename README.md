@@ -1,6 +1,9 @@
 # Cloudflare Dynamic DNS (CFDDNS)
 
-A simple dynamic DNS application.
+A simple example dynamic DNS application that uses the python-cloudflare API to
+create an IPV4 record that points to your public IP address. It periodically
+runs and updates the record whenever your IP changes.
+__WARNING__ currently not working
 
 ## Requirements
 
