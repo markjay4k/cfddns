@@ -16,7 +16,7 @@ __WARNING__ currently not working
 ### Docker
 
 ```shell
-git clone https://githubuser.com/markjay4k/cfddns.git
+git clone https://github.com/markjay4k/cfddns.git
 cd cfddns
 ```
 add the values to the environment variables in the `docker-compose.yaml` file,
