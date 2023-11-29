@@ -13,8 +13,13 @@ A simple dynamic DNS application.
 ### Docker
 
 ```shell
-    $: git clone https://githubuser.com/markjay4k/cfddns.git
-    $: cd cfddns
-    $: docker compose up -d
+git clone https://githubuser.com/markjay4k/cfddns.git
+cd cfddns
+```
+add the values to the environment variables in the `docker-compose.yaml` file,
+or add them to a `.env` file. Then start the container with docker compose
+
+```shell
+docker compose up -d
 ```
 
