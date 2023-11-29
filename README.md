@@ -12,9 +12,9 @@ A simple dynamic DNS application.
 
 ### Docker
 
-    ```shell
+```shell
     $: git clone https://githubuser.com/markjay4k/cfddns.git
     $: cd cfddns
     $: docker compose up -d
-    ```
+```
 
