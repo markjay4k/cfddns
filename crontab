@@ -1,0 +1,2 @@
+*/10 * * * * . /app/setenv.sh && /usr/local/bin/python /app/cfddns.py >> /var/log/cron.log 2>&1
+
