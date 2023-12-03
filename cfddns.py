@@ -33,7 +33,7 @@ class DDNS:
         self.ipv4_record = os.getenv('CF_IPV4_RECORD')
         self.zone_id = os.getenv('CF_ZONE_ID')
         self.log = logs('ddns.log')
-        self.log.info(f'starting {__name__}')
+        self.log.info(f'starting cfddns')
         self.log.info(f'token: {self.token}')
         self.cf = CloudFlare.CloudFlare(token=self.token)
         self.ip_urls = [
@@ -116,7 +116,6 @@ class DDNS:
 
 
 if __name__ == '__main__':
-    print(f'STARTING {__name__}!')
     with DDNS() as ddns:
         ddns.find_record()
 

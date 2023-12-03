@@ -3,7 +3,9 @@
 A simple example dynamic DNS application that uses the python-cloudflare API to
 create an IPV4 record that points to your public IP address. It periodically
 runs and updates the record whenever your IP changes.
-__WARNING__ currently not working
+
+__WARNING: use at your own risk. this will make changes to your DNS records in
+Cloudflare.__ 
 
 ## Requirements
 
