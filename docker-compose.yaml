@@ -3,6 +3,8 @@ services:
   cfddns:
     container_name: cfddns
     restart: 'unless-stopped'
+    security_opt:
+      - no-new-privileges:true
     environment:
       - CF_API_TOKEN=${CF_API_TOKEN}
       - CF_ZONE_ID=${CF_ZONE_ID}

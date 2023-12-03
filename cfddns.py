@@ -32,8 +32,9 @@ class DDNS:
         self.record_type = os.getenv('CF_RECORD_TYPE')
         self.ipv4_record = os.getenv('CF_IPV4_RECORD')
         self.zone_id = os.getenv('CF_ZONE_ID')
-        self.proxied = os.getenv('CF_PROXIED')
+        self.proxied = bool(int(os.getenv('CF_PROXIED')))
         self.log = logs('ddns.log')
+        self.log.info(f'{self.proxied}')
         self.log.info(f'starting cfddns')
         self.cf = CloudFlare.CloudFlare(token=self.token)
         self.ip_urls = [
@@ -94,7 +95,7 @@ class DDNS:
             'type': self.record_type,
             'name': self.ipv4_record,
             'content': self.content,
-            'proxied': self.proxied,
+            'proxied': bool(self.proxied),
             'ttl': 1,
         }
         self.log.info(f'creating the following CF record entry:')
