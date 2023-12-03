@@ -13,7 +13,7 @@ def logs(file):
     file_handler = logging.FileHandler(file)
     file_handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
-        '%(name)s: %(asctime)s - %(levelname)s: %(message)s'
+        '%(asctime)s - %(levelname)s: %(message)s'
     )
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
@@ -24,6 +24,13 @@ def logs(file):
 
 
 class DDNS:
+    """
+        DDNS uses cloudflare python api to ensure there is 
+        an entry for the provided ipv4 record in the CF zone
+        that points to the public IP address of the device 
+        running DDNS
+        It is meant to be ran with crontab in Docker
+    """
     __version__ = '0.1'
     __author__ = 'markjay4k'
 
@@ -48,12 +55,12 @@ class DDNS:
         """
         for ip in self.ip_urls:
             try:
-                self.log.info(f'check public IP: {ip}')
+                self.log.debug(f'check public IP: {ip}')
                 self.content = requests.get(ip).text
             except requess.exceptions.RequestException as e:
                 self.log.warning(f'IP request failed: {ip}')
             else:
-                self.log.info(f'IP address found: {self.content}')
+                self.log.debug(f'IP address found: {self.content}')
                 return self.content
         else:
             self.log.warning(f'no public IP found')
@@ -70,14 +77,12 @@ class DDNS:
             dns_records = self.cf.zones.dns_records.get(self.zone_id)
             for record in dns_records:
                 if record['type'] == self.record_type and record['name'] ==self.ipv4_record:
-                    self.log.info(f"Record found: {record['name']}")
                     if record['content'] == self.content:
                         self.log.info(f'record is up to date')
                         return True
                     else:
-                        self.log.warning(f'record != current IP!')
-                        self.log.info(f'public IP has changed')
-                        self.log.info(f'deleting record {record["name"]}')
+                        self.log.warning(f'public IP has changed')
+                        self.log.info(f'deleting old record: {record["name"]}')
                         self.cf.zones.dns_records.delete(
                             self.zone_id,
                             record['id']
