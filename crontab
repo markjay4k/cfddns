@@ -1,1 +1,1 @@
-*/15 * * * * /usr/local/bin/python /app/cfddns.py >> /var/log/cron.log 2>&1
+* * * * * /usr/local/bin/python /app/cfddns.py >> /var/log/cron.log 2>&1

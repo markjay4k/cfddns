@@ -8,6 +8,7 @@ services:
       - CF_ZONE_ID=${CF_ZONE_ID}
       - CF_IPV4_RECORD=${CF_IPV4_RECORD}
       - CF_RECORD_TYPE=${CF_RECORD_TYPE}
+      - CF_PROXIED=${CF_PROXIED}
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -16,3 +17,4 @@ services:
         - CF_ZONE_ID=${CF_ZONE_ID}
         - CF_IPV4_RECORD=${CF_IPV4_RECORD}
         - CF_RECORD_TYPE=${CF_RECORD_TYPE}
+        - CF_PROXIED=${CF_PROXIED}

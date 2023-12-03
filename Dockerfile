@@ -9,11 +9,13 @@ ARG CF_API_TOKEN
 ARG CF_ZONE_ID
 ARG CF_IPV4_RECORD
 ARG CF_RECORD_TYPE
+ARG CF_PROXIED
 
 RUN echo "CF_API_TOKEN=$CF_API_TOKEN" >> /etc/environment
 RUN echo "CF_ZONE_ID=$CF_ZONE_ID" >> /etc/environment
 RUN echo "CF_IPV4_RECORD=$CF_IPV4_RECORD" >> /etc/environment
 RUN echo "CF_RECORD_TYPE=$CF_RECORD_TYPE" >> /etc/environment
+RUN echo "CF_PROXIED=$CF_PROXIED" >> /etc/environment
 
 RUN chmod 0644 /etc/cron.d/my-crontab
 RUN touch /var/log/cron.log

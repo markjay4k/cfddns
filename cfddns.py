@@ -32,9 +32,9 @@ class DDNS:
         self.record_type = os.getenv('CF_RECORD_TYPE')
         self.ipv4_record = os.getenv('CF_IPV4_RECORD')
         self.zone_id = os.getenv('CF_ZONE_ID')
+        self.proxied = os.getenv('CF_PROXIED')
         self.log = logs('ddns.log')
         self.log.info(f'starting cfddns')
-        self.log.info(f'token: {self.token}')
         self.cf = CloudFlare.CloudFlare(token=self.token)
         self.ip_urls = [
             'https://api.ipify.org',
@@ -42,6 +42,9 @@ class DDNS:
         ]
 
     def _public_ip(self):
+        """
+            gets the public IPV4 address for the network
+        """
         for ip in self.ip_urls:
             try:
                 self.log.info(f'check public IP: {ip}')
@@ -56,6 +59,12 @@ class DDNS:
             raise AttributeError('could not get public IP')
 
     def find_record(self):
+        """
+            uses CF-API to check if record exists.
+            if not -> create record
+            if found and content != public IPV4 address -> delete and recreate
+            if found and content = public IPV4 address -> do nothing
+        """
         try:
             dns_records = self.cf.zones.dns_records.get(self.zone_id)
             for record in dns_records:
@@ -85,6 +94,8 @@ class DDNS:
             'type': self.record_type,
             'name': self.ipv4_record,
             'content': self.content,
+            'proxied': self.proxied,
+            'ttl': 1,
         }
         self.log.info(f'creating the following CF record entry:')
         for k, v in dns_record.items():
