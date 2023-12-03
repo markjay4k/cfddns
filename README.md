@@ -19,6 +19,11 @@ __WARNING__ currently not working
 git clone https://github.com/markjay4k/cfddns.git
 cd cfddns
 ```
+- `CF_API_TOKEN`
+- `CF_ZONE_ID`
+- `CF_IPV4_RECORD`
+- `CF_RECORD_TYPE`
+
 add the values to the environment variables in the `docker-compose.yaml` file,
 or add them to a `.env` file. Then start the container with docker compose
 

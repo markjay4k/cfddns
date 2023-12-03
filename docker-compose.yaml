@@ -3,11 +3,16 @@ services:
   cfddns:
     container_name: cfddns
     restart: 'unless-stopped'
-    build:
-      context: .
-      dockerfile: ./Dockerfile
     environment:
       - CF_API_TOKEN=${CF_API_TOKEN}
       - CF_ZONE_ID=${CF_ZONE_ID}
       - CF_IPV4_RECORD=${CF_IPV4_RECORD}
       - CF_RECORD_TYPE=${CF_RECORD_TYPE}
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - CF_API_TOKEN=${CF_API_TOKEN}
+        - CF_ZONE_ID=${CF_ZONE_ID}
+        - CF_IPV4_RECORD=${CF_IPV4_RECORD}
+        - CF_RECORD_TYPE=${CF_RECORD_TYPE}

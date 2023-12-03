@@ -24,6 +24,9 @@ def logs(file):
 
 
 class DDNS:
+    __version__ = '0.1'
+    __author__ = 'markjay4k'
+
     def __init__(self):
         self.token = os.getenv('CF_API_TOKEN')
         self.record_type = os.getenv('CF_RECORD_TYPE')
@@ -31,7 +34,7 @@ class DDNS:
         self.zone_id = os.getenv('CF_ZONE_ID')
         self.log = logs('ddns.log')
         self.log.info(f'starting {__name__}')
-        self.log.debug(f'token: {self.token}')
+        self.log.info(f'token: {self.token}')
         self.cf = CloudFlare.CloudFlare(token=self.token)
         self.ip_urls = [
             'https://api.ipify.org',
@@ -52,12 +55,40 @@ class DDNS:
             self.log.warning(f'no public IP found')
             raise AttributeError('could not get public IP')
 
-    def update_cf_record(self):
+    def find_record(self):
+        try:
+            dns_records = self.cf.zones.dns_records.get(self.zone_id)
+            for record in dns_records:
+                if record['type'] == self.record_type and record['name'] ==self.ipv4_record:
+                    self.log.info(f"Record found: {record['name']}")
+                    if record['content'] == self.content:
+                        self.log.info(f'record is up to date')
+                        return True
+                    else:
+                        self.log.warning(f'record != current IP!')
+                        self.log.info(f'public IP has changed')
+                        self.log.info(f'deleting record {record["name"]}')
+                        self.cf.zones.dns_records.delete(
+                            self.zone_id,
+                            record['id']
+                        )
+                        self.create_record()
+            else:
+                self.log.info(f'No record found')
+                self.log.info(f'Creating new request')
+                self.create_record()
+        except CloudFlare.exceptions.CloudFlareAPIError as e:
+            print(f'{e}')
+
+    def create_record(self):
         dns_record = {
             'type': self.record_type,
             'name': self.ipv4_record,
             'content': self.content,
         }
+        self.log.info(f'creating the following CF record entry:')
+        for k, v in dns_record.items():
+            self.log.info(f'  - {k}: {v}')
         try:
             response = self.cf.zones.dns_records.post(
                 self.zone_id,
@@ -85,6 +116,7 @@ class DDNS:
 
 
 if __name__ == '__main__':
+    print(f'STARTING {__name__}!')
     with DDNS() as ddns:
-        ddns.update_cf_record()
+        ddns.find_record()
 
