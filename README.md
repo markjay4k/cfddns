@@ -21,13 +21,17 @@ Cloudflare.__
 git clone https://github.com/markjay4k/cfddns.git
 cd cfddns
 ```
+
+add the following values to the environment variables in the `docker-compose.yaml` file,
+or add them to a `.env` file.
+
 - `CF_API_TOKEN`
 - `CF_ZONE_ID`
 - `CF_IPV4_RECORD`
 - `CF_RECORD_TYPE`
+- `CF_PROXIED`
 
-add the values to the environment variables in the `docker-compose.yaml` file,
-or add them to a `.env` file. Then start the container with docker compose
+Start the container with docker compose
 
 ```shell
 docker compose up -d
