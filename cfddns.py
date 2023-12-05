@@ -5,13 +5,17 @@ import requests
 import logging
 import sys
 import os
+from logging.handlers import RotatingFileHandler
 
 
 def logs(file):
     logger = logging.getLogger('CF-DDNS')
     logger.setLevel(logging.INFO)
-    file_handler = logging.FileHandler(file)
-    file_handler.setLevel(logging.DEBUG)
+    file_handler = RotatingFileHandler(
+        file, mode='a', maxBytes=524288,
+        backupCount=2, encoding=None, delay=0
+    )
+    file_handler.setLevel(logging.INFO)
     formatter = logging.Formatter(
         '%(asctime)s - %(levelname)s: %(message)s'
     )
@@ -41,7 +45,6 @@ class DDNS:
         self.zone_id = os.getenv('CF_ZONE_ID')
         self.proxied = bool(int(os.getenv('CF_PROXIED')))
         self.log = logs('ddns.log')
-        self.log.info(f'{self.proxied}')
         self.log.info(f'starting cfddns')
         self.cf = CloudFlare.CloudFlare(token=self.token)
         self.ip_urls = [
