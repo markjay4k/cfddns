@@ -81,7 +81,7 @@ class DDNS:
             for record in dns_records:
                 if record['type'] == self.record_type and record['name'] ==self.ipv4_record:
                     if record['content'] == self.content:
-                        self.log.info(f'record is up to date')
+                        self.log.info(f'record up to date')
                         return True
                     else:
                         self.log.warning(f'public IP has changed')
